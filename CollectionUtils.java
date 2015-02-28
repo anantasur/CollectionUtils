@@ -1,30 +1,27 @@
 import java.util.*;
 
-interface ListMapper<E> {
-   E mapper(E element);
+interface ListMapper<E,K> {
+	public K map(E element);
 }
 
 interface ListFilter<E> {
-	boolean filter(E element);
+	public boolean filter(E element);
 }
 
 public class CollectionUtils {
 
-	public static<E> List<E> map(List<E> list, ListMapper listMapper) {
-		List<E> result = new ArrayList();
-		for(E ele : list) {
-			E i = (E)listMapper.mapper(ele);
-			result.add(i);
-		}
-		return result;
+	public static <E,K> List<K> map(List<E> list, ListMapper<E,K> mapper){
+		List<K> newlist = new ArrayList<K>();
+		for(E ele :list){
+			newlist.add(mapper.map(ele));
+		} 
+		return newlist;
 	}
 
 	public static<E> List<E> filter(List<E> list, ListFilter listFilter) {
 		List<E> result = new ArrayList();
-		int index = 0;
 		for(E ele : list) {
 			boolean flag = listFilter.filter(ele);
-			index++;
 			if(flag)
 				result.add(ele);
 		}
