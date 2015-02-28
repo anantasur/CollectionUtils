@@ -8,6 +8,11 @@ interface ListFilter<E> {
 	public boolean filter(E element);
 }
 
+
+interface ListReducer<E,K>{
+	public K compare(K previousValue,E currentValue);
+}
+
 public class CollectionUtils {
 
 	public static <E,K> List<K> map(List<E> list, ListMapper<E,K> mapper){
@@ -26,6 +31,14 @@ public class CollectionUtils {
 				result.add(ele);
 		}
 		return result;
+	}
+
+	public static <E,K> K reduce(List<E> list, ListReducer<E,K> reducer, K initial){
+		K value =initial;
+		for(E ele :list){
+			value = reducer.compare(value,ele);
+		} 
+		return value;
 	}
 
 }
